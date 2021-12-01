@@ -3,6 +3,10 @@ from django.http import HttpResponse, JsonResponse
 from .models import Prices
 from .serializers import PriceSerializers
 
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+
 import requests
 import environ
 
@@ -31,16 +35,20 @@ def getPrices(request):
     price.time_zone = priceDetails["7. Time Zone"]
     price.bid_price = priceDetails["8. Bid Price"]
     price.ask_price = priceDetails["9. Ask Price"]
-    if price.save():
-        print("data saved")
-        print(data)
-        return HttpResponse("Saved record")
-    else:
-        print("Failed to save record")
-        return HttpResponse("Failed to save")
+    price.save()
+    return HttpResponse("Neew records saved")
 
 
-def getLatestExchangeRates(request):
-    lastestExchangeRate = Prices.objects.last()
-    serializer = PriceSerializers(lastestExchangeRate, many=False)
-    return JsonResponse(serializer.data, safe=False)
+class PriceList(APIView):
+
+    # fetching latest exchange prices
+    def get(self, request, format=None):
+        lastestExchangeRate = Prices.objects.last()
+        serializer = PriceSerializers(lastestExchangeRate, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # fetching all prices
+    def post(self, request, format=None):
+        allPrices = Prices.objects.all()
+        serializer = PriceSerializers(allPrices, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -139,7 +139,7 @@ CELERY_TIMEZONE = 'Aisa/Dubai'
 
 CELERY_BEAT_SCHEDULE = {
     "sample_task": {
-        "task": "app.tasks.add",
+        "task": "app.tasks.savePrice",
         "schedule": crontab(minute="*/1"),
     },
 }

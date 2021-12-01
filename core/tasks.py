@@ -6,6 +6,6 @@ from app.views import getPrices
 
 
 @shared_task
-def add():
+def savePrice():
     print("hellooo.....4")
     getPrices(HttpRequest)
