@@ -4,3 +4,4 @@ celery
 redis
 requests
 djangorestframework
+django_environ

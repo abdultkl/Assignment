@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-import requests
-
 from .models import Prices
 from .serializers import PriceSerializers
+
+import requests
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 
 # Create your views here.
 
 
 def getPrices(request):
-    apikey = "IQKFCT1ET8PKDXD"
+    apikey = env('API_KEY')
     # replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
     url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=USD&apikey='+apikey
     r = requests.get(url)
