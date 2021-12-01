@@ -135,11 +135,11 @@ STATIC_URL = '/static/'
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
-CELERY_TIMEZONE = 'Aisa/Dubai'
+# CELERY_TIMEZONE = 'Aisa/Dubai'
 
 CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
-        "task": "app.tasks.savePrice",
-        "schedule": crontab(minute="*/1"),
+    "add": {
+        "task": "app.tasks.add",
+        "schedule": crontab(minute="*/30"),
     },
 }
