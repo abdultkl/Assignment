@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import app.tasks
+from celery.schedules import crontab
 from pathlib import Path
 import os
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -79,10 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER':'postgres',
-        'PASSWORD':'postgres',
-        'HOST':'pgdb',
-        'PORT':'5432',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'pgdb',
+        'PORT': '5432',
     }
 }
 
@@ -128,9 +131,8 @@ STATIC_URL = '/static/'
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
-from celery.schedules import crontab
+CELERY_TIMEZONE = 'Aisa/Dubai'
 
-import app.tasks
 CELERY_BEAT_SCHEDULE = {
     "sample_task": {
         "task": "app.tasks.add",
